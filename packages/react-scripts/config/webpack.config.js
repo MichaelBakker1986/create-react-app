@@ -34,6 +34,7 @@ const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 // @remove-on-eject-begin
 const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
 // @remove-on-eject-end
@@ -608,6 +609,7 @@ module.exports = function (webpackEnv) {
           },
           isEnvProduction
             ? {
+                  inlineSource: '.(js|css)$', // embed all javascript and css inline
                 minify: {
                   removeComments: true,
                   collapseWhitespace: true,
@@ -624,6 +626,7 @@ module.exports = function (webpackEnv) {
             : undefined
         )
       ),
+      isEnvProduction &&   new HtmlWebpackInlineSourcePlugin(HtmlWebpackPlugin),
       // Inlines the webpack runtime script. This script is too small to warrant
       // a network request.
       // https://github.com/facebook/create-react-app/issues/5358
